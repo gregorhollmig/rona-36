@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ronakeller.com — happy birthday, Rona</title>
+  <meta name="description" content="Happy Birthday, Rona. This is your domain now." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f5f1e6'/%3E%3Ctext x='32' y='46' font-size='44' text-anchor='middle' font-family='Courier New, monospace' fill='%232b2620'%3E*%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --paper: #f5f1e6;
+      --ink: #2b2620;
+      --ink-soft: #57503f;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body { height: 100%; }
+
+    body {
+      background:
+        radial-gradient(ellipse at 50% 35%, rgba(255,255,255,.5), transparent 60%),
+        radial-gradient(ellipse at 50% 110%, rgba(120,100,60,.10), transparent 55%),
+        var(--paper);
+      color: var(--ink);
+      font-family: "Special Elite", "Courier New", Courier, monospace;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .5;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.05'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    main {
+      max-width: 30ch;
+      width: 100%;
+    }
+
+    .date {
+      font-size: .78rem;
+      letter-spacing: .35em;
+      color: var(--ink-soft);
+      margin-bottom: 3.2rem;
+    }
+
+    p {
+      font-size: clamp(1.35rem, 4.5vw, 1.8rem);
+      line-height: 1.75;
+      min-height: 1.75em;
+      white-space: pre-wrap;
+    }
+
+    .spacer { min-height: 1.4em; }
+
+    .domain {
+      margin-top: 1.2rem;
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: .35em;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: .55em;
+      height: 1.05em;
+      margin-left: .08em;
+      background: var(--ink);
+      vertical-align: -0.15em;
+      animation: blink 1s steps(1) infinite;
+    }
+
+    @keyframes blink { 50% { opacity: 0; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .cursor { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="date">17 . 09 . 2026</p>
+    <div id="letter">
+      <noscript>
+        <p>Happy Birthday, Rona,</p>
+        <p class="spacer">&nbsp;</p>
+        <p>this is - again - your domain now.</p>
+        <p>yours to keep, yours to fill.</p>
+        <p class="spacer">&nbsp;</p>
+        <p class="domain">ronakeller.com</p>
+      </noscript>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      var letter = document.getElementById("letter");
+
+      var lines = [
+        { text: "Happy Birthday, Rona,", pauseAfter: 600 },
+        { spacer: true },
+        { text: "this is - again - your domain now.", pauseAfter: 500 },
+        { text: "yours to keep, yours to fill.", pauseAfter: 900 },
+        { spacer: true },
+        { text: "ronakeller.com", cls: "domain" }
+      ];
+
+      var cursor = document.createElement("span");
+      cursor.className = "cursor";
+
+      var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      function newP(cls) {
+        var p = document.createElement("p");
+        if (cls) p.className = cls;
+        letter.appendChild(p);
+        return p;
+      }
+
+      function wait(ms) {
+        return new Promise(function (r) { setTimeout(r, ms); });
+      }
+
+      async function type() {
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i];
+          if (line.spacer) {
+            newP("spacer").innerHTML = "&nbsp;";
+            continue;
+          }
+          var p = newP(line.cls);
+          p.appendChild(cursor);
+          if (reduced) {
+            cursor.remove();
+            p.textContent = line.text;
+            p.appendChild(cursor);
+            continue;
+          }
+          for (var j = 0; j < line.text.length; j++) {
+            cursor.remove();
+            p.textContent += line.text[j];
+            p.appendChild(cursor);
+            var ch = line.text[j];
+            var delay = 55 + Math.random() * 85;
+            if (ch === "," || ch === ".") delay += 160;
+            await wait(delay);
+          }
+          if (line.pauseAfter) await wait(line.pauseAfter);
+        }
+      }
+
+      type();
+    })();
+  </script>
+</body>
+</html>
